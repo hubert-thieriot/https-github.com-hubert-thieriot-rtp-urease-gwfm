@@ -32,12 +32,14 @@ count %>%
   ggplot() +
   geom_bar(aes(count, reorder(country, count)), stat = "identity") +
   geom_text(aes(count, reorder(country, count), label=count), hjust=-0.2, nudge_x = 0.8, size=3) +
+  scale_x_continuous(expand=expansion(mult=c(0, 0.05))) +
   labs(title="Number of national regulations on fertiliser use in agriculture",
        x="Number of regulations",
+       subtitle="Top 20 countries",
        y=NULL,
-       caption="Source: Kanter, D.R., Chodos, O., Nordland, O. et al. Gaps and opportunities in nitrogen pollution policies around the world. Nat Sustain 3, 956–963 (2020)")
+       caption="Source: Kanter et al. Gaps and opportunities in nitrogen pollution policies around the world.\nNat Sustain 3, 956–963 (2020)")
 
-ggsave(file.path(results_dir, "regulations.png"), width=8, height=6, scale=1.2)
+ggsave(file.path(results_dir, "regulations.png"), width=8, height=5, scale=1.2)
 
 
 count %>%
