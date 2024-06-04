@@ -10,8 +10,8 @@ HSCODE_UREA <- "310210"
 # Get data
 comtrade_data <- comtradr::ct_get_data(
   commodity_code = HSCODE_UREA,
-  start_date = 2023,
-  end_date = 2023
+  start_date = 2022,
+  end_date = 2022
 )
 
 # Check data
@@ -25,6 +25,6 @@ comtrade_data %>%
   mutate(net_export = Export + `Re-export` - Import - `Re-import`) %>%
   ungroup() %>%
   select(country, net_export) %>%
-  mutate(unit = 'kg', year=2023, hs_code=HSCODE_UREA) %>%
+  mutate(unit = 'kg', hs_code=HSCODE_UREA) %>%
   arrange(desc(net_export)) %>%
   clipr::write_clip()

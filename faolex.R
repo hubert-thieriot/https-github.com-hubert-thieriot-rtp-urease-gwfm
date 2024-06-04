@@ -1,7 +1,6 @@
 # Extracting number of relevant regulations from https://www.nature.com/articles/s41893-020-0577-7#Sec18
 # The authors of the paper stored the data in a Google Sheet: https://docs.google.com/spreadsheets/d/1hOfl5Np80oC4EXrNMi7emnhx3RByRFSvOfEr9f2GJC4/edit#gid=0
 
-
 library(tidyverse)
 
 # Load the data
@@ -15,8 +14,8 @@ count <- regulations %>%
            sector=Sector,
            scale=Scale) %>%
   filter(grepl("fertili", descriptors, ignore.case = TRUE),
-         scale=="National",
-         sector=="Agriculture") %>%
+         grepl("national", scale, ignore.case = TRUE),
+         grepl("agriculture", sector, ignore.case = TRUE)) %>%
   group_by(country) %>%
   summarise(count=n()) %>%
   arrange(desc(count))
@@ -29,5 +28,5 @@ count %>%
 
 
 count %>%
-  dplyr::select(country, count) %>%
+  dplyr::select(country, n_regulations=count) %>%
   clipr::write_clip()

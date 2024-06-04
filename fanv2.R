@@ -9,6 +9,7 @@ library(ncdf4)
 library(rnaturalearth)
 library(raster)
 library(sf)
+library(countrycode)
 
 
 # Download ammonia emissions from https://zenodo.org/records/3841723
@@ -58,9 +59,14 @@ country_nh3 <- cbind(countries, nh3_kt_year = country_nh3[,2]) %>%
 
 # Export results
 country_nh3 %>%
+  # Keep top - 50
+  arrange(desc(nh3_kt_year)) %>%
+  head(50) %>%
   ggplot() +
-  geom_bar(aes(nh3_kt_year, reorder(name, nh3_kt_year)), stat = "identity")
+  geom_bar(aes(nh3_kt_year, reorder(name, nh3_kt_year), fill=region_un), stat = "identity")
 
 country_nh3 %>%
-  dplyr::select(name, nh3_kt_year) %>%
+  dplyr::select(adm0_a3, nh3_kt_year) %>%
+  mutate(country = countrycode(adm0_a3, "iso3c", "country.name")) %>%
+  dplyr::select(country, nh3_kt_year) %>%
   clipr::write_clip()
